@@ -180,3 +180,51 @@ function getAnalystForDay(date) {
 
 
 document.getElementById('exportMonthly').addEventListener('click', exportMonthlyReport);
+
+// exportar plantoes
+
+
+document.getElementById('exportMonthly').addEventListener('click', exportMonthlyReport);
+
+function exportMonthlyReport() {
+    const year = currentDate.getFullYear();
+    const month = currentDate.getMonth();
+    const monthName = monthNames[month];
+    
+    // Dados para o relatório diário
+    const dailyData = [['Data', 'Dia da Semana', 'Analista de Plantão']];
+    
+    // Objeto para contar plantões por analista
+    const analystCount = {};
+    
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    for (let day = 1; day <= daysInMonth; day++) {
+        const date = new Date(year, month, day);
+        const dayOfWeek = daysOfWeek[date.getDay()];
+        const inputId = `day-${year}-${month}-${day}`;
+        const analyst = document.getElementById(inputId).value || 'Não definido';
+        dailyData.push([`${day}/${month + 1}/${year}`, dayOfWeek, analyst]);
+        
+        if (analyst !== 'Não definido') {
+            analystCount[analyst] = (analystCount[analyst] || 0) + 1;
+        }
+    }
+    
+    // Dados para o resumo
+    const summaryData = [['Analista', 'Número de Plantões', 'Valor a Receber (R$)']];
+    for (const [analyst, count] of Object.entries(analystCount)) {
+        const value = count * getDayValue(`day-${year}-${month}-1`); // Usando o valor do primeiro dia como referência
+        summaryData.push([analyst, count, value.toFixed(2)]);
+    }
+    
+    // Criar planilhas
+    const wb = XLSX.utils.book_new();
+    const dailySheet = XLSX.utils.aoa_to_sheet(dailyData);
+    const summarySheet = XLSX.utils.aoa_to_sheet(summaryData);
+    
+    XLSX.utils.book_append_sheet(wb, dailySheet, "Relatório Diário");
+    XLSX.utils.book_append_sheet(wb, summarySheet, "Resumo");
+    
+    // Gerar o arquivo XLSX
+    XLSX.writeFile(wb, `Relatório_Plantão_${monthName}_${year}.xlsx`);
+}
