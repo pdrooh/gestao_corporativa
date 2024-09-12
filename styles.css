@@ -819,7 +819,7 @@ h2, h3 {
 .analistas-contador {
     display: flex;
     justify-content: space-between;
-    background-color: #f0f0f0;
+    background-color: #e8f5e9;
     padding: 10px;
     border-radius: 4px;
     margin-bottom: 10px;
@@ -827,6 +827,21 @@ h2, h3 {
 }
 
 .analistas-contador span {
+    flex: 1;
+    text-align: center;
+}
+
+.ferias-contador {
+    display: flex;
+    justify-content: space-between;
+    background-color: #e8f5e9;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.ferias-contador span {
     flex: 1;
     text-align: center;
 }

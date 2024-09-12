@@ -12,6 +12,8 @@ document.addEventListener('DOMContentLoaded', () => {
     atualizarListaFerias();
     inicializarFiltroData();
     atualizarStatusAnalistas();
+    atualizarContadorFerias();
+
 });
 
 function carregarDados() {
@@ -77,6 +79,7 @@ function adicionarFerias(event) {
     } else {
         showNotification('Por favor, preencha todos os campos.', 'error');
     }
+    atualizarContadorFerias();
 }
 
 function atualizarListaAnalistas() {
@@ -135,6 +138,7 @@ function removerFerias(index) {
     atualizarListaFerias();
     atualizarStatusAnalistas();
     showNotification('Férias removidas com sucesso!');
+    atualizarContadorFerias();
 }
 
 function removerAnalista(index) {
@@ -326,6 +330,7 @@ function atualizarFeriasAnalista(antigoNome, novoNome) {
             periodo.analista = novoNome;
         }
     });
+    atualizarContadorFerias();
 }
 
 // Inicialização
@@ -550,4 +555,13 @@ function atualizarContadorAnalistas() {
 
     document.getElementById('totalAnalistas').textContent = `Total de Analistas: ${totalAnalistas}`;
     document.getElementById('analistasDisponiveis').textContent = `Analistas Disponíveis: ${analistasDisponiveis}`;
+}
+
+function atualizarContadorFerias() {
+    const totalFerias = ferias.length;
+    const hoje = new Date();
+    const feriasConcluidas = ferias.filter(f => new Date(f.dataFim) < hoje).length;
+
+    document.getElementById('totalFerias').textContent = `Total de Férias Marcadas: ${totalFerias}`;
+    document.getElementById('feriasConcluidas').textContent = `Férias Concluídas: ${feriasConcluidas}`;
 }
