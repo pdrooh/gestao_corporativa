@@ -815,3 +815,18 @@ h2, h3 {
 .export-btn:hover {
     background-color: #45a049;
 }
+
+.analistas-contador {
+    display: flex;
+    justify-content: space-between;
+    background-color: #f0f0f0;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.analistas-contador span {
+    flex: 1;
+    text-align: center;
+}

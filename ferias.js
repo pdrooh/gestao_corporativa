@@ -181,6 +181,8 @@ function atualizarStatusAnalistas() {
             </div>
         `;
         statusAnalistas.appendChild(item);
+        atualizarContadorAnalistas();
+
     });
 }
 
@@ -197,6 +199,7 @@ function inicializarFiltroData() {
 
     dataInicioFiltro.valueAsDate = hoje;
     dataFimFiltro.valueAsDate = new Date(hoje.getFullYear(), hoje.getMonth() + 1, 0);
+    atualizarContadorAnalistas();
 }
 
 function filtrarStatus() {
@@ -526,4 +529,25 @@ function exportarRelatorio() {
     document.body.removeChild(link);
 
     showNotification('Relatório CSV exportado com sucesso!');
+}
+
+function atualizarContadorAnalistas() {
+    const totalAnalistas = analistas.length;
+    const dataInicioFiltro = new Date(document.getElementById('dataInicioFiltro').value);
+    const dataFimFiltro = new Date(document.getElementById('dataFimFiltro').value);
+    
+    const analistasDisponiveis = analistas.filter(analista => {
+        const periodoFerias = ferias.find(periodo => {
+            const inicioFerias = new Date(periodo.dataInicio);
+            const fimFerias = new Date(periodo.dataFim);
+            return periodo.analista === analista.nome && 
+                   ((inicioFerias >= dataInicioFiltro && inicioFerias <= dataFimFiltro) ||
+                    (fimFerias >= dataInicioFiltro && fimFerias <= dataFimFiltro) ||
+                    (inicioFerias <= dataInicioFiltro && fimFerias >= dataFimFiltro));
+        });
+        return !periodoFerias;
+    }).length;
+
+    document.getElementById('totalAnalistas').textContent = `Total de Analistas: ${totalAnalistas}`;
+    document.getElementById('analistasDisponiveis').textContent = `Analistas Disponíveis: ${analistasDisponiveis}`;
 }
