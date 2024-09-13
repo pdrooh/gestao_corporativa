@@ -130,35 +130,55 @@ function exportMonthlyReport() {
     const month = currentDate.getMonth();
     const monthName = monthNames[month];
     
-    // Obter dados do resumo
-    const summaryItems = document.querySelectorAll('.summary-item');
-    const summaryData = [['Analista', 'Plantões durante a semana', 'Plantões fim de semana', 'Total de Plantões', 'Valor a Receber (R$)']];
+    // Objeto para contar plantões por analista
+    const analystData = {};
     
-    summaryItems.forEach(item => {
-        const name = item.querySelector('h3').textContent;
-        const totalShifts = parseInt(item.querySelector('p:nth-child(2)').textContent.split(': ')[1]);
-        const totalValue = parseFloat(item.querySelector('p:nth-child(3)').textContent.split('R$ ')[1]);
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    for (let day = 1; day <= daysInMonth; day++) {
+        const date = new Date(year, month, day);
+        const dayOfWeek = date.getDay();
+        const inputId = `day-${year}-${month}-${day}`;
+        const analyst = document.getElementById(inputId).value || 'Não definido';
         
-        // Calcular plantões de semana e fim de semana
-        const weekendShifts = Math.round(totalValue / 100);
-        const weekdayShifts = totalShifts - weekendShifts;
-        
-        summaryData.push([
-            name,
-            weekdayShifts,
-            weekendShifts,
-            totalShifts,
-            totalValue.toFixed(2)
-        ]);
-    });
+        if (analyst !== 'Não definido') {
+            if (!analystData[analyst]) {
+                analystData[analyst] = { weekdayShifts: 0, weekendShifts: 0, totalValue: 0 };
+            }
+            
+            if (dayOfWeek >= 1 && dayOfWeek <= 4) { // Segunda a Quinta
+                analystData[analyst].weekdayShifts++;
+                analystData[analyst].totalValue += 35;
+            } else if (dayOfWeek === 5) { // Sexta-feira
+                analystData[analyst].weekendShifts++;
+                analystData[analyst].totalValue += 300;
+            }
+        }
+    }
+    
+    // Preparar dados para o relatório e ordenar alfabeticamente
+    const reportData = [['Analista', 'Plantões durante a semana', 'Plantões fim de semana', 'Total de Plantões', 'Valor a Receber (R$)']];
+    
+    Object.entries(analystData)
+        .sort((a, b) => a[0].localeCompare(b[0])) // Ordenar alfabeticamente
+        .forEach(([analyst, data]) => {
+            const totalShifts = data.weekdayShifts + data.weekendShifts;
+            reportData.push([
+                analyst,
+                data.weekdayShifts,
+                data.weekendShifts,
+                totalShifts,
+                data.totalValue.toFixed(2)
+            ]);
+        });
     
     // Criar planilha
     const wb = XLSX.utils.book_new();
-    const summarySheet = XLSX.utils.aoa_to_sheet(summaryData);
+    const reportSheet = XLSX.utils.aoa_to_sheet(reportData);
     
-    XLSX.utils.book_append_sheet(wb, summarySheet, "Resumo de Plantões");
+    XLSX.utils.book_append_sheet(wb, reportSheet, "Relatório de Plantões");
     
     // Gerar o arquivo XLSX
     XLSX.writeFile(wb, `Relatório_Plantão_${monthName}_${year}.xlsx`);
 }
+
 
