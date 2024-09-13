@@ -107,68 +107,65 @@ document.addEventListener('input', (e) => {
 
 updateCalendar();
 
-const PLANTAO_VALUE = 100; // Valor por plantão em reais
 
 function exportMonthlyReport() {
-    console.log('Iniciando exportação do relatório');
-
-    const currentDate = new Date(currentYear, currentMonth);
-    const monthName = currentDate.toLocaleString('pt-BR', { month: 'long' });
     const year = currentDate.getFullYear();
-
-    console.log(`Mês: ${monthName}, Ano: ${year}`);
-
-    // Criar dados para o relatório diário
-    const dailyData = [
-        ['Data', 'Dia da Semana', 'Analista de Plantão']
-    ];
-
+    const month = currentDate.getMonth();
+    const monthName = monthNames[month];
+    
+    // Dados para o relatório diário
+    const dailyData = [['Data', 'Dia da Semana', 'Analista de Plantão', 'Valor do Plantão']];
+    
     // Objeto para contar plantões por analista
-    const analystCount = {};
-
-    const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+    const analystData = {};
+    
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
     for (let day = 1; day <= daysInMonth; day++) {
-        const date = new Date(currentYear, currentMonth, day);
-        const dayOfWeek = date.toLocaleString('pt-BR', { weekday: 'long' });
-        const analyst = getAnalystForDay(date);
-        dailyData.push([`${day}/${currentMonth + 1}/${currentYear}`, dayOfWeek, analyst]);
+        const date = new Date(year, month, day);
+        const dayOfWeek = daysOfWeek[date.getDay()];
+        const inputId = `day-${year}-${month}-${day}`;
+        const analyst = document.getElementById(inputId).value || 'Não definido';
+        const isWeekend = [5, 6, 0].includes(date.getDay()); // Sexta, Sábado, Domingo
+        const value = isWeekend ? 100 : 35;
 
-        // Contar plantões por analista
+        dailyData.push([`${day}/${month + 1}/${year}`, dayOfWeek, analyst, value]);
+        
         if (analyst !== 'Não definido') {
-            analystCount[analyst] = (analystCount[analyst] || 0) + 1;
+            if (!analystData[analyst]) {
+                analystData[analyst] = { weekdayShifts: 0, weekendShifts: 0, totalValue: 0 };
+            }
+            if (isWeekend) {
+                analystData[analyst].weekendShifts++;
+            } else {
+                analystData[analyst].weekdayShifts++;
+            }
+            analystData[analyst].totalValue += value;
         }
     }
-
-    console.log('Dados diários:', dailyData);
-    console.log('Contagem de analistas:', analystCount);
-
-    // Criar dados para o resumo
-    const summaryData = [
-        ['Analista', 'Número de Plantões', 'Valor a Receber (R$)']
-    ];
-
-    for (const [analyst, count] of Object.entries(analystCount)) {
-        const value = count * PLANTAO_VALUE;
-        summaryData.push([analyst, count, value.toFixed(2)]);
+    
+    // Dados para o resumo
+    const summaryData = [['Analista', 'Plantões durante a semana', 'Plantões fim de semana', 'Total de Plantões', 'Valor a Receber (R$)']];
+    for (const [analyst, data] of Object.entries(analystData)) {
+        const totalShifts = data.weekdayShifts + data.weekendShifts;
+        summaryData.push([
+            analyst,
+            data.weekdayShifts,
+            data.weekendShifts,
+            totalShifts,
+            data.totalValue.toFixed(2)
+        ]);
     }
-
-    console.log('Dados do resumo:', summaryData);
-
+    
     // Criar planilhas
+    const wb = XLSX.utils.book_new();
     const dailySheet = XLSX.utils.aoa_to_sheet(dailyData);
     const summarySheet = XLSX.utils.aoa_to_sheet(summaryData);
-
-    // Criar um livro e adicionar as planilhas
-    const wb = XLSX.utils.book_new();
+    
     XLSX.utils.book_append_sheet(wb, dailySheet, "Relatório Diário");
     XLSX.utils.book_append_sheet(wb, summarySheet, "Resumo");
-
-    console.log('Livro criado com sucesso');
-
+    
     // Gerar o arquivo XLSX
     XLSX.writeFile(wb, `Relatório_Plantão_${monthName}_${year}.xlsx`);
-
-    console.log('Arquivo XLSX gerado');
 }
 
 function getAnalystForDay(date) {
