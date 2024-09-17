@@ -1,11 +1,6 @@
 let ferias = JSON.parse(localStorage.getItem('ferias')) || [];
 let analistas = JSON.parse(localStorage.getItem('analistas')) || [];
 
-function salvarDados() {
-    localStorage.setItem('ferias', JSON.stringify(ferias));
-    localStorage.setItem('analistas', JSON.stringify(analistas));
-}
-
 document.addEventListener('DOMContentLoaded', () => {
     carregarDados();
     atualizarListaAnalistas();
@@ -15,6 +10,13 @@ document.addEventListener('DOMContentLoaded', () => {
     atualizarContadorFerias();
 
 });
+
+
+// Salvar e carregar informações local
+function salvarDados() {
+    localStorage.setItem('ferias', JSON.stringify(ferias));
+    localStorage.setItem('analistas', JSON.stringify(analistas));
+}
 
 function carregarDados() {
     const feriasData = localStorage.getItem('ferias');
@@ -29,6 +31,7 @@ function carregarDados() {
     }
 }
 
+// Criação dos analistas
 
 function criarAnalista(nome, cargo = '', dataContratacao = '', telefone = '') {
     return {
@@ -56,31 +59,27 @@ function adicionarAnalista(event) {
     }
 }
 
-function adicionarFerias(event) {
-    event.preventDefault();
-    const analistaNome = document.getElementById('analista').value;
-    const dataInicio = document.getElementById('dataInicio').value;
-    const dataFim = document.getElementById('dataFim').value;
+// Remoção analista 
 
-    if (analistaNome && dataInicio && dataFim) {
-        ferias.push({ analista: analistaNome, dataInicio, dataFim });
-        const analista = analistas.find(a => a.nome === analistaNome);
-        if (analista) {
-            if (!analista.historicoFerias) {
-                analista.historicoFerias = [];
-            }
-            analista.historicoFerias.push({ dataInicio, dataFim });
-        }
-        salvarDados();
-        atualizarListaFerias();
-        atualizarStatusAnalistas();
-        event.target.reset();
-        showNotification('Férias adicionadas com sucesso!');
-    } else {
-        showNotification('Por favor, preencha todos os campos.', 'error');
-    }
-    atualizarContadorFerias();
+function removerAnalista(index) {
+    const analistaNome = analistas[index].nome;
+    analistas.splice(index, 1);
+    ferias = ferias.filter(f => f.analista !== analistaNome);
+    salvarDados();
+    atualizarListaAnalistas();
+    atualizarListaFerias();
+    atualizarStatusAnalistas();
+    showNotification('Analista removido com sucesso!');
 }
+
+function confirmarRemoverAnalista(index) {
+    if (confirm(`Tem certeza que deseja remover ${analistas[index].nome}?`)) {
+        removerAnalista(index);
+    }
+}
+
+
+// Atualizar Analista
 
 function atualizarListaAnalistas() {
     const select = document.getElementById('analista');
@@ -93,63 +92,11 @@ function atualizarListaAnalistas() {
     });
 }
 
-function atualizarListaFerias() {
-    const listaFerias = document.getElementById('feriasList');
-    listaFerias.innerHTML = '';
-    const hoje = new Date();
+// Atualizar Status (Disponive/indisponivel) Analista
 
-    ferias.forEach((periodo, index) => {
-        const item = document.createElement('div');
-        item.className = 'ferias-item';
-        
-        const fimFerias = new Date(periodo.dataFim);
-        const concluido = fimFerias < hoje;
-        
-        if (concluido) {
-            item.style.backgroundColor = '#E8F5E9';
-        }
-
-        item.innerHTML = `
-            <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
-                <span style="display: flex; align-items: center;">
-                    ${concluido ? '<i class="fas fa-check-circle" style="color: green; margin-right: 5px;"></i>' : ''}
-                    <strong>${periodo.analista}</strong>: ${periodo.dataInicio} até ${periodo.dataFim}
-                </span>
-                <button onclick="removerFerias(${index})" class="btn-remover">Remover</button>
-            </div>
-        `;
-        listaFerias.appendChild(item);
-    });
-}
-
-
-function removerFerias(index) {
-    const feriasRemovidas = ferias.splice(index, 1)[0];
-    const analista = analistas.find(a => a.nome === feriasRemovidas.analista);
-    if (analista && analista.historicoFerias) {
-        const indexHistorico = analista.historicoFerias.findIndex(
-            f => f.dataInicio === feriasRemovidas.dataInicio && f.dataFim === feriasRemovidas.dataFim
-        );
-        if (indexHistorico !== -1) {
-            analista.historicoFerias.splice(indexHistorico, 1);
-        }
-    }
-    salvarDados();
-    atualizarListaFerias();
-    atualizarStatusAnalistas();
-    showNotification('Férias removidas com sucesso!');
-    atualizarContadorFerias();
-}
-
-function removerAnalista(index) {
-    const analistaNome = analistas[index].nome;
-    analistas.splice(index, 1);
-    ferias = ferias.filter(f => f.analista !== analistaNome);
-    salvarDados();
-    atualizarListaAnalistas();
-    atualizarListaFerias();
-    atualizarStatusAnalistas();
-    showNotification('Analista removido com sucesso!');
+function formatDate(dateString) {
+    const [year, month, day] = dateString.split('-');
+    return `${day.padStart(2, '0')}-${month.padStart(2, '0')}-${year}`; // Formato DD-MM-AAAA
 }
 
 function atualizarStatusAnalistas() {
@@ -177,7 +124,7 @@ function atualizarStatusAnalistas() {
             <div class="analista-info">
                 <p><strong>${analista.nome}</strong></p>
                 <p class="status-text">${status}</p>
-                ${periodoFerias ? `<p class="ferias-periodo">Ausente de ${periodoFerias.dataInicio} até ${periodoFerias.dataFim}</p>` : ''}
+                ${periodoFerias ? `<p class="ferias-periodo">Ausente de ${formatDate(periodoFerias.dataInicio)} até ${formatDate(periodoFerias.dataFim)}</p>` : ''}
             </div>
             <div class="analista-actions">
                 <button onclick="abrirPopupAnalista(${index})" class="btn-icon btn-view"><i class="fas fa-eye"></i></button>
@@ -186,15 +133,196 @@ function atualizarStatusAnalistas() {
         `;
         statusAnalistas.appendChild(item);
         atualizarContadorAnalistas();
-
     });
 }
 
-function confirmarRemoverAnalista(index) {
-    if (confirm(`Tem certeza que deseja remover ${analistas[index].nome}?`)) {
-        removerAnalista(index);
+
+
+// Contador de analistas
+
+function atualizarContadorAnalistas() {
+    const totalAnalistas = analistas.length;
+    const dataInicioFiltro = new Date(document.getElementById('dataInicioFiltro').value);
+    const dataFimFiltro = new Date(document.getElementById('dataFimFiltro').value);
+    
+    const analistasDisponiveis = analistas.filter(analista => {
+        const periodoFerias = ferias.find(periodo => {
+            const inicioFerias = new Date(periodo.dataInicio);
+            const fimFerias = new Date(periodo.dataFim);
+            return periodo.analista === analista.nome && 
+                   ((inicioFerias >= dataInicioFiltro && inicioFerias <= dataFimFiltro) ||
+                    (fimFerias >= dataInicioFiltro && fimFerias <= dataFimFiltro) ||
+                    (inicioFerias <= dataInicioFiltro && fimFerias >= dataFimFiltro));
+        });
+        return !periodoFerias;
+    }).length;
+
+    document.getElementById('totalAnalistas').textContent = `Total de Analistas: ${totalAnalistas}`;
+    document.getElementById('analistasDisponiveis').textContent = `Analistas Disponíveis: ${analistasDisponiveis}`;
+}
+
+// Criação de férias 
+
+function adicionarFerias(event) {
+    event.preventDefault();
+    const analistaNome = document.getElementById('analista').value;
+    const dataInicio = document.getElementById('dataInicio').value;
+    const dataFim = document.getElementById('dataFim').value;
+
+    if (analistaNome && dataInicio && dataFim) {
+        ferias.push({ analista: analistaNome, dataInicio, dataFim });
+        const analista = analistas.find(a => a.nome === analistaNome);
+        if (analista) {
+            if (!analista.historicoFerias) {
+                analista.historicoFerias = [];
+            }
+            analista.historicoFerias.push({ dataInicio, dataFim });
+        }
+        salvarDados();
+        atualizarListaFerias();
+        atualizarStatusAnalistas();
+        event.target.reset();
+        showNotification('Férias adicionadas com sucesso!');
+    } else {
+        showNotification('Por favor, preencha todos os campos.', 'error');
+    }
+    atualizarContadorFerias();
+}
+
+// Atualizar lista de férias
+
+function atualizarListaFerias() {
+    const listaFerias = document.getElementById('feriasList');
+    listaFerias.innerHTML = '';
+    const hoje = new Date();
+
+    ferias.forEach((periodo, index) => {
+        const item = document.createElement('div');
+        item.className = 'ferias-item';
+
+        const fimFerias = new Date(periodo.dataFim);
+        const concluido = fimFerias < hoje; // Verifica se as férias estão concluídas
+
+        if (concluido) {
+            item.style.backgroundColor = '#E8F5E9'; // Estilo para férias concluídas
+        }
+
+        item.innerHTML = `
+            <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                <span style="display: flex; align-items: center;">
+                    ${concluido ? '<i class="fas fa-check-circle" style="color: green; margin-right: 5px;"></i>' : ''}
+                    <strong>${periodo.analista}</strong>: ${formatDate(periodo.dataInicio)} até ${formatDate(periodo.dataFim)}
+                </span>
+                <button onclick="removerFerias(${index})" class="btn-remover">Remover</button>
+            </div>
+        `;
+        listaFerias.appendChild(item);
+    });
+}
+
+
+// Remover Férias
+
+function removerFerias(index) {
+    const feriasRemovidas = ferias.splice(index, 1)[0];
+    const analista = analistas.find(a => a.nome === feriasRemovidas.analista);
+    if (analista && analista.historicoFerias) {
+        const indexHistorico = analista.historicoFerias.findIndex(
+            f => f.dataInicio === feriasRemovidas.dataInicio && f.dataFim === feriasRemovidas.dataFim
+        );
+        if (indexHistorico !== -1) {
+            analista.historicoFerias.splice(indexHistorico, 1);
+        }
+    }
+    salvarDados();
+    atualizarListaFerias();
+    atualizarStatusAnalistas();
+    showNotification('Férias removidas com sucesso!');
+    atualizarContadorFerias();
+}
+
+
+function removerFeriasAnalista(analistaNome, index) {
+    const analista = analistas.find(a => a.nome === analistaNome);
+    if (analista && analista.historicoFerias) {
+        analista.historicoFerias.splice(index, 1);
+    }
+    ferias = ferias.filter((f, i) => !(f.analista === analistaNome && i === index));
+    salvarDados();
+    atualizarHistoricoFerias(analista);
+    atualizarListaFerias();
+    atualizarStatusAnalistas();
+    showNotification('Férias do analista removidas com sucesso!');
+}
+
+// Atualizar historico de férias 
+
+
+function atualizarHistoricoFerias(analista) {
+    const historicoElement = document.getElementById('historicoFerias');
+    historicoElement.innerHTML = '<h3>Histórico de Férias</h3>';
+
+    const feriasAnalista = ferias.filter(f => f.analista === analista.nome);
+    if (feriasAnalista.length === 0) {
+        historicoElement.innerHTML += '<p class="no-ferias">Nenhum registro de férias.</p>';
+    } else {
+        const lista = document.createElement('ul');
+        lista.className = 'ferias-lista';
+        const hoje = new Date();
+
+        feriasAnalista.forEach((f, index) => {
+            const fimFerias = new Date(f.dataFim);
+            const concluido = fimFerias < hoje;
+
+            const item = document.createElement('li');
+            item.className = `ferias-item ${concluido ? 'concluido' : 'pendente'}`;
+
+            item.innerHTML = `
+                <span class="ferias-periodo">
+                    <i class="fas ${concluido ? 'fa-check-circle' : 'fa-clock'}"></i>
+                    ${formatDate(f.dataInicio)} até ${formatDate(f.dataFim)}
+                </span>
+                <button onclick="removerFeriasAnalista('${analista.nome}', ${index})" 
+                        class="btn-remover-ferias">
+                    <i class="fas fa-trash"></i>
+                </button>
+            `;
+            lista.appendChild(item);
+        });
+        historicoElement.appendChild(lista);
+    }
+
+    const proximasFerias = feriasAnalista.find(f => new Date(f.dataInicio) > new Date());
+    if (proximasFerias) {
+        historicoElement.innerHTML += `
+            <p class="proximas-ferias">
+                <i class="fas fa-plane-departure"></i>
+                Próximas férias: ${formatDate(proximasFerias.dataInicio)} até ${formatDate(proximasFerias.dataFim)}
+            </p>`;
     }
 }
+
+
+// Contador de férias
+
+function atualizarFeriasAnalista(antigoNome, novoNome) {
+    ferias.forEach(periodo => {
+        if (periodo.analista === antigoNome) {
+            periodo.analista = novoNome;
+        }
+    });
+    atualizarContadorFerias();
+}
+
+function atualizarContadorFerias() {
+    const totalFerias = ferias.length;
+    const hoje = new Date();
+    const feriasConcluidas = ferias.filter(f => new Date(f.dataFim) < hoje).length;
+
+    document.getElementById('totalFerias').textContent = `Total de Férias Marcadas: ${totalFerias}`;
+    document.getElementById('feriasConcluidas').textContent = `Férias Concluídas: ${feriasConcluidas}`;
+}
+
 
 function inicializarFiltroData() {
     const hoje = new Date();
@@ -227,11 +355,10 @@ function abrirPopupAnalista(index) {
     document.getElementById('analistaCargo').value = analista.cargo || '';
     document.getElementById('analistaDataContratacao').value = analista.dataContratacao || '';
     document.getElementById('analistaTelefone').value = analista.telefone || '';
-
     atualizarHistoricoFerias(analista);
-
     document.getElementById('popupOverlay').style.display = 'flex';
 }
+
 
 document.getElementById('analistaForm').addEventListener('submit', function(e) {
     e.preventDefault();
@@ -265,73 +392,6 @@ document.getElementById('analistaForm').addEventListener('submit', function(e) {
 
 
 
-function atualizarHistoricoFerias(analista) {
-    const historicoElement = document.getElementById('historicoFerias');
-    historicoElement.innerHTML = '<h3>Histórico de Férias</h3>';
-
-    const feriasAnalista = ferias.filter(f => f.analista === analista.nome);
-    if (feriasAnalista.length === 0) {
-        historicoElement.innerHTML += '<p class="no-ferias">Nenhum registro de férias.</p>';
-    } else {
-        const lista = document.createElement('ul');
-        lista.className = 'ferias-lista';
-        const hoje = new Date();
-
-        feriasAnalista.forEach((f, index) => {
-            const item = document.createElement('li');
-            const fimFerias = new Date(f.dataFim);
-            const concluido = fimFerias < hoje;
-
-            item.className = `ferias-item ${concluido ? 'concluido' : 'pendente'}`;
-            
-            item.innerHTML = `
-                <span class="ferias-periodo">
-                    <i class="fas ${concluido ? 'fa-check-circle' : 'fa-clock'}"></i>
-                    ${f.dataInicio} até ${f.dataFim}
-                </span>
-                <button onclick="removerFeriasAnalista('${analista.nome}', ${index})" 
-                        class="btn-remover-ferias">
-                    <i class="fas fa-trash"></i>
-                </button>
-            `;
-            lista.appendChild(item);
-        });
-        historicoElement.appendChild(lista);
-    }
-
-    const proximasFerias = feriasAnalista.find(f => new Date(f.dataInicio) > new Date());
-    if (proximasFerias) {
-        historicoElement.innerHTML += `
-            <p class="proximas-ferias">
-                <i class="fas fa-plane-departure"></i>
-                Próximas férias: ${proximasFerias.dataInicio} até ${proximasFerias.dataFim}
-            </p>`;
-    }
-}
-
-
-
-function removerFeriasAnalista(analistaNome, index) {
-    const analista = analistas.find(a => a.nome === analistaNome);
-    if (analista && analista.historicoFerias) {
-        analista.historicoFerias.splice(index, 1);
-    }
-    ferias = ferias.filter((f, i) => !(f.analista === analistaNome && i === index));
-    salvarDados();
-    atualizarHistoricoFerias(analista);
-    atualizarListaFerias();
-    atualizarStatusAnalistas();
-    showNotification('Férias do analista removidas com sucesso!');
-}
-
-function atualizarFeriasAnalista(antigoNome, novoNome) {
-    ferias.forEach(periodo => {
-        if (periodo.analista === antigoNome) {
-            periodo.analista = novoNome;
-        }
-    });
-    atualizarContadorFerias();
-}
 
 // Inicialização
 document.addEventListener('DOMContentLoaded', () => {
@@ -536,32 +596,16 @@ function exportarRelatorio() {
     showNotification('Relatório CSV exportado com sucesso!');
 }
 
-function atualizarContadorAnalistas() {
-    const totalAnalistas = analistas.length;
-    const dataInicioFiltro = new Date(document.getElementById('dataInicioFiltro').value);
-    const dataFimFiltro = new Date(document.getElementById('dataFimFiltro').value);
-    
-    const analistasDisponiveis = analistas.filter(analista => {
-        const periodoFerias = ferias.find(periodo => {
-            const inicioFerias = new Date(periodo.dataInicio);
-            const fimFerias = new Date(periodo.dataFim);
-            return periodo.analista === analista.nome && 
-                   ((inicioFerias >= dataInicioFiltro && inicioFerias <= dataFimFiltro) ||
-                    (fimFerias >= dataInicioFiltro && fimFerias <= dataFimFiltro) ||
-                    (inicioFerias <= dataInicioFiltro && fimFerias >= dataFimFiltro));
-        });
-        return !periodoFerias;
-    }).length;
 
-    document.getElementById('totalAnalistas').textContent = `Total de Analistas: ${totalAnalistas}`;
-    document.getElementById('analistasDisponiveis').textContent = `Analistas Disponíveis: ${analistasDisponiveis}`;
+// Formatação de datas
+
+function formatDate(dateString) {
+    const [year, month, day] = dateString.split('-');
+    return `${day.padStart(2, '0')}-${month.padStart(2, '0')}-${year}`; // Formato DD-MM-AAAA
 }
 
-function atualizarContadorFerias() {
-    const totalFerias = ferias.length;
-    const hoje = new Date();
-    const feriasConcluidas = ferias.filter(f => new Date(f.dataFim) < hoje).length;
 
-    document.getElementById('totalFerias').textContent = `Total de Férias Marcadas: ${totalFerias}`;
-    document.getElementById('feriasConcluidas').textContent = `Férias Concluídas: ${feriasConcluidas}`;
+function reverseFormatDate(dateString) {
+    const [day, month, year] = dateString.split('-');
+    return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`; // Retorna para AAAA-MM-DD
 }

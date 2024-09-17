@@ -180,5 +180,3 @@ function exportMonthlyReport() {
     // Gerar o arquivo XLSX
     XLSX.writeFile(wb, `Relatório_Plantão_${monthName}_${year}.xlsx`);
 }
-
-

@@ -635,7 +635,7 @@ h2, h3 {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.7);
     justify-content: center;
     align-items: center;
     z-index: 1000;
@@ -644,9 +644,12 @@ h2, h3 {
 .popup-content {
     background-color: white;
     padding: 20px;
-    border-radius: 5px;
-    width: 80%;
-    max-width: 500px;
+    border-radius: 15px;
+    width: 90%;
+    max-width: 600px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease, opacity 0.3s ease; /* Animação suave */
+    opacity: 1;
 }
 
 .close {
@@ -654,22 +657,31 @@ h2, h3 {
     font-size: 28px;
     font-weight: bold;
     cursor: pointer;
+    color: #e74c3c; /* Cor do botão de fechar */
 }
 
 .form-group {
-    margin-bottom: 15px;
+    margin-bottom: 20px;
 }
 
 .form-group label {
     display: block;
     margin-bottom: 5px;
+    font-weight: bold; /* Negrito */
+    color: #333; /* Cor do texto */
 }
 
 .form-group input {
     width: 100%;
-    padding: 5px;
-    border: 1px solid #ccc;
-    border-radius: 3px;
+    padding: 12px; /* Mais espaço interno */
+    border: 2px solid #3498db; /* Borda colorida */
+    border-radius: 10px; /* Bordas arredondadas */
+    transition: border-color 0.3s; /* Transição suave */
+}
+
+.form-group input:focus {
+    border-color: #2980b9; /* Cor ao focar */
+    box-shadow: 0 0 5px rgba(52, 152, 219, 0.5); /* Sombra ao focar */
 }
 
 .form-actions {
@@ -677,20 +689,21 @@ h2, h3 {
     margin-top: 20px;
 }
 
+
 .btn-salvar {
     background-color: #4CAF50;
     color: white;
-    padding: 10px 20px;
+    padding: 12px 25px;
     border: none;
-    border-radius: 4px;
+    border-radius: 10px; /* Bordas arredondadas */
     cursor: pointer;
+    transition: background-color 0.3s ease; /* Transição suave */
+    font-size: 1.1rem; /* Tamanho da fonte */
 }
 
 .btn-salvar:hover {
-    background-color: #45a049;
+    background-color: #45a049; /* Cor ao passar o mouse */
 }
-
-
 .ferias-lista {
     list-style-type: none;
     padding: 0;
@@ -702,16 +715,23 @@ h2, h3 {
     align-items: center;
     padding: 10px;
     margin-bottom: 10px;
-    border-radius: 4px;
-    background-color: #f0f0f0;
+    border-radius: 8px; /* Bordas arredondadas */
+    background-color: #f0f8ff; /* Azul claro */
+    transition: background-color 0.3s; /* Transição suave */
+}
+
+.ferias-item:hover {
+    background-color: #e0f7fa; /* Azul mais claro ao passar o mouse */
 }
 
 .ferias-item.concluido {
-    background-color: #e8f5e9;
+    background-color: #d1e7dd; /* Verde suave */
+    border-left: 5px solid #4CAF50; /* Borda esquerda verde */
 }
 
 .ferias-item.pendente {
-    background-color: #fff3e0;
+    background-color: #fff3cd; /* Amarelo suave */
+    border-left: 5px solid #ff9800; /* Borda esquerda laranja */
 }
 
 .ferias-periodo {
@@ -721,6 +741,7 @@ h2, h3 {
 
 .ferias-periodo i {
     margin-right: 10px;
+    font-size: 1.5rem; /* Tamanho do ícone */
 }
 
 .btn-remover-ferias {
@@ -728,23 +749,29 @@ h2, h3 {
     border: none;
     cursor: pointer;
     color: #ff4444;
+    font-size: 1.2rem; /* Tamanho do ícone */
 }
 
 .no-ferias {
     font-style: italic;
     color: #666;
+    text-align: center; /* Centralizar texto */
 }
 
 .proximas-ferias {
     margin-top: 20px;
     font-weight: bold;
-    color: #4CAF50;
+    color: #4CAF50; /* Cor verde */
+    text-align: center; /* Centralizar texto */
 }
 
 .proximas-ferias i {
     margin-right: 10px;
 }
 
+#historicoFerias {
+    margin-top: 20px;
+}
 
 /* Responsividade para o popup */
 @media (max-width: 768px) {
