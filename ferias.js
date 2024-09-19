@@ -1,5 +1,7 @@
 let ferias = JSON.parse(localStorage.getItem('ferias')) || [];
 let analistas = JSON.parse(localStorage.getItem('analistas')) || [];
+// Ordena os analistas em ordem alfabética
+analistas.sort((a, b) => a.nome.localeCompare(b.nome));
 
 document.addEventListener('DOMContentLoaded', () => {
     carregarDados();
@@ -84,6 +86,10 @@ function confirmarRemoverAnalista(index) {
 function atualizarListaAnalistas() {
     const select = document.getElementById('analista');
     select.innerHTML = '<option value="">Selecione um analista</option>';
+
+    // Ordena os analistas em ordem alfabética
+    analistas.sort((a, b) => a.nome.localeCompare(b.nome));
+
     analistas.forEach(analista => {
         const option = document.createElement('option');
         option.value = analista.nome;
@@ -91,6 +97,7 @@ function atualizarListaAnalistas() {
         select.appendChild(option);
     });
 }
+
 
 // Atualizar Status (Disponive/indisponivel) Analista
 
@@ -322,6 +329,15 @@ function atualizarContadorFerias() {
     document.getElementById('totalFerias').textContent = `Total de Férias Marcadas: ${totalFerias}`;
     document.getElementById('feriasConcluidas').textContent = `Férias Concluídas: ${feriasConcluidas}`;
 }
+
+function ocultarTodasFerias() {
+    const feriasDivs = document.querySelectorAll('.ferias-item');
+    feriasDivs.forEach(div => {
+        div.style.display = 'none';
+    });
+    atualizarContadorFerias(); // Atualiza o contador após ocultar
+}
+
 
 
 function inicializarFiltroData() {
@@ -609,3 +625,5 @@ function reverseFormatDate(dateString) {
     const [day, month, year] = dateString.split('-');
     return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`; // Retorna para AAAA-MM-DD
 }
+
+

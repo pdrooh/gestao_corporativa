@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - Sistema de Gestão</title>
+    <link rel="stylesheet" href="home.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/your-fontawesome-kit.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-content">
+            <ul class="navbar-nav">
+                <li class="nav-item"><a href="home.html" class="nav-link active">Home</a></li>
+                <li class="nav-item"><a href="index.html" class="nav-link">Plantão</a></li>
+                <li class="nav-item"><a href="ferias.html" class="nav-link">Férias</a></li>
+            </ul>
+            <div class="navbar-logo">
+                <img src="logo.png" alt="Ikatec Logo">
+            </div>
+            <div class="navbar-brand">
+                <i class="fas fa-calendar-alt"></i> GesTool
+            </div>
+        </div>
+    </nav>
+
+    <div id="notification" style="display: none; position: fixed; top: 20px; right: 20px; background-color: #4caf50; color: white; padding: 15px; border-radius: 5px; z-index: 1000;">
+        As alterações foram salvas com sucesso!
+    </div>
+
+    <div class="container">
+        <div class="form-container">
+            <h2>Cadastro de Analistas</h2>
+            <form id="analistaForm" class="analistas-form">
+                <div class="form-group">
+                    <label for="nomeAnalista">Nome:</label>
+                    <input type="text" id="nomeAnalista" placeholder="Nome do Analista" required>
+                </div>
+                <div class="form-group">
+                    <label for="setorAnalista">Setor:</label>
+                    <input type="text" id="setorAnalista" placeholder="Setor" required>
+                </div>
+                <div class="form-group">
+                    <label for="cargoAnalista">Cargo:</label>
+                    <input type="text" id="cargoAnalista" placeholder="Cargo" required>
+                </div>
+                <div class="form-group">
+                    <label for="emailAnalista">Email:</label>
+                    <input type="email" id="emailAnalista" placeholder="Email" required>
+                </div>
+                <div class="form-group">
+                    <label for="telefoneAnalista">Telefone:</label>
+                    <input type="tel" id="telefoneAnalista" placeholder="Telefone" required>
+                </div>
+                <div class="form-group">
+                    <label for="dataContratacaoInput">Data de Contratação:</label>
+                    <input type="date" id="dataContratacaoInput" required>
+                </div>
+                <div class="form-group">
+                    <button type="submit">Adicionar Analista</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="list-container">
+            <h2>Lista de Analistas (<span id="totalAnalistas">0</span>)</h2>
+            <div class="analistas-list-container">
+                <div class="analistas-list" id="analistasList">
+                    <!-- A lista de analistas será preenchida dinamicamente -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="popupOverlay" style="display: none;" class="popup-overlay">
+        <div class="popup-content">
+            <span class="close">&times;</span>
+            <h2>Cadastro de Analista</h2>
+            <form id="analistaFormPopup">
+                <div class="form-group">
+                    <label for="nomeAnalistaPopup">Nome:</label>
+                    <input type="text" id="nomeAnalistaPopup" required>
+                </div>
+                <div class="form-group">
+                    <label for="setorAnalistaPopup">Setor:</label>
+                    <input type="text" id="setorAnalistaPopup" required>
+                </div>
+                <div class="form-group">
+                    <label for="cargoAnalistaPopup">Cargo:</label>
+                    <input type="text" id="cargoAnalistaPopup" required>
+                </div>
+                <div class="form-group">
+                    <label for="emailAnalistaPopup">Email:</label>
+                    <input type="email" id="emailAnalistaPopup" required>
+                </div>
+                <div class="form-group">
+                    <label for="telefoneAnalistaPopup">Telefone:</label>
+                    <input type="tel" id="telefoneAnalistaPopup" required>
+                </div>
+                <div class="form-group">
+                    <label for="dataContratacaoPopup">Data de Contratação:</label>
+                    <input type="date" id="dataContratacaoPopup" required>
+                </div>
+                <div class="plantao-container">
+                    <h2>Configurações de Plantão</h2>
+                    <div class="form-group plantao-option">
+                        <label for="plantaoSemanaValue">Plantão dias de semana</label>
+                        <div class="toggle-container">
+                            <input type="checkbox" id="plantaoSemanaValue">
+                            <span class="slider"></span>
+                        </div>
+                    </div>
+                    <div class="form-group plantao-option">
+                        <label for="plantaoFimSemanaValue">Plantão fim de semana</label>
+                        <div class="toggle-container">
+                            <input type="checkbox" id="plantaoFimSemanaValue" checked>
+                            <span class="slider"></span>
+                        </div>
+                    </div>
+                </div>
+                
+                
+                
+                
+                <div class="form-group">
+                    <button type="submit" class="btn-salvar">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+
+    <script src="home.js"></script>
+</body>
+</html>

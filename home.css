@@ -1,3 +1,81 @@
+/* home */
+
+.analista-item {
+    background-color: #e8f5e9; /* Cor de fundo */
+    padding: 10px; /* Espaçamento */
+    margin-bottom: 10px; /* Margem inferior */
+    border-radius: 5px; /* Bordas arredondadas */
+    color: green; /* Cor do texto */
+}
+/* Estilos do conteúdo */
+.container {
+    display: flex;
+    justify-content: space-between; /* Espaço entre o formulário e a lista */
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+.form-container, .list-container {
+    flex: 1; /* Ocupa o mesmo espaço */
+    background-color: #fff; /* Fundo branco */
+    border-radius: 8px; /* Bordas arredondadas */
+    padding: 20px; /* Espaçamento interno */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra */
+    margin-right: 20px; /* Espaço extra à direita do formulário */
+}
+
+.list-container {
+    margin-right: 0; /* Remove margem direita do segundo quadro */
+}
+
+/* Quadro interno para a lista */
+.analistas-list-container {
+    background-color: #fff; /* Fundo branco */
+    border: 1px solid #fffd; /* Borda ao redor do quadro interno */
+    border-radius: 8px; /* Bordas arredondadas */
+    padding: 20px; /* Espaçamento interno */
+    margin-bottom: 30px;
+    max-height: 661px; /* Define a altura máxima do quadro interno */
+    overflow-y: scroll; /* Permite rolagem vertical */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra para o quadro interno */
+}
+
+/* Estilos do cabeçalho da lista */
+.list-header {
+    display: flex;
+    justify-content: space-between; /* Espaço entre título e contador */
+    align-items: center; /* Alinha verticalmente */
+    margin-bottom: 15px; /* Espaçamento abaixo do cabeçalho */
+}
+
+/* Estilos adicionais para a lista */
+.analista-item {
+    display: flex;
+    justify-content: space-between; /* Espaço entre o nome e os botões */
+    padding: 10px 0; /* Espaçamento interno dos itens */
+    border-bottom: 1px solid #eee; /* Linha divisória entre os itens */
+}
+
+.analista-item:last-child {
+    border-bottom: none; /* Remove a linha do último item */
+}
+
+/* Impede a rolagem da página inteira */
+body {
+    overflow: hidden; /* Impede a rolagem da página inteira */
+}
+
+/* Oculta a barra de rolagem, mas mantém a rolagem funcional */
+.analistas-list-container {
+    scrollbar-width: none; /* Para Firefox */
+}
+
+.analistas-list-container::-webkit-scrollbar {
+    display: none; /* Para Chrome, Safari e outros navegadores baseados em WebKit */
+}
+
+
 /* Reset e estilos gerais */
 * {
     margin: 0;
@@ -874,24 +952,170 @@ h2, h3 {
 }
 
 
-.export-section {
-    display: flex;
-    justify-content: flex-end;
+/* Estilos para o popup do analista */
+
+
+/* Estilos para o popup */
+.popup-overlay {
+    display: flex; /* Flexbox para centralizar */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7); /* Fundo escuro */
+    justify-content: center; /* Centraliza horizontalmente */
+    align-items: center; /* Centraliza verticalmente */
+    z-index: 1000; /* Coloca o popup acima de outros elementos */
+}
+
+.popup-content {
+    background-color: #ffffff; /* Fundo branco */
+    padding: 20px; /* Espaçamento interno */
+    border-radius: 10px; /* Bordas arredondadas */
+    width: 90%; /* Largura do popup */
+    max-width: 600px; /* Largura máxima */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* Sombra */
+    transition: transform 0.3s ease, opacity 0.3s ease; /* Animação suave */
+}
+
+.close {
+    cursor: pointer; /* Cursor de ponteiro */
+    float: right; /* Alinha à direita */
+    font-size: 28px; /* Tamanho da fonte */
+    color: #e74c3c; /* Cor do botão de fechar */
+}
+
+.form-group {
     margin-bottom: 20px;
 }
 
-.export-btn {
-    background-color: #4CAF50;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s ease;
-    margin-left: 10px; /* Espaçamento entre os botões */
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold; /* Negrito */
 }
 
-.export-btn:hover {
-    background-color: #45a049;
+.form-group input {
+    width: 100%;
+    padding: 12px; /* Mais espaço interno */
+    border: 2px solid #3498db; /* Borda colorida */
+    border-radius: 10px; /* Bordas arredondadas */
+    transition: border-color 0.3s; /* Transição suave */
 }
+
+.form-group input:focus {
+    border-color: #2980b9; /* Cor ao focar */
+    box-shadow: 0 0 5px rgba(52, 152, 219, 0.5); /* Sombra ao focar */
+}
+
+.btn-salvar {
+    background-color: #4CAF50; /* Cor do botão salvar */
+    color: white;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 10px; /* Bordas arredondadas */
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* Transição suave */
+}
+
+.btn-salvar:hover {
+    background-color: #45a049; /* Cor ao passar o mouse */
+}
+
+
+.histórico-ferias {
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid #ddd; /* Borda do histórico */
+    border-radius: 8px; /* Bordas arredondadas */
+    background-color: #f9f9f9; /* Fundo do histórico */
+}
+
+.histórico-ferias h4 {
+    margin-bottom: 10px;
+    color: #1a237e; /* Cor do título */
+}
+
+.histórico-ferias ul {
+    list-style-type: none; /* Remove marcadores da lista */
+    padding: 0; /* Remove padding */
+}
+
+.histórico-ferias li {
+    padding: 5px 0; /* Espaçamento entre os itens */
+    border-bottom: 1px solid #ddd; /* Linha divisória */
+}
+
+.histórico-ferias li:last-child {
+    border-bottom: none; /* Remove a linha do último item */
+}
+
+
+/* Estilos para a notificação */
+#notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: #4caf50; /* Cor de fundo verde */
+    color: white; /* Cor do texto */
+    padding: 15px;
+    border-radius: 5px;
+    z-index: 1000;
+    display: none; /* Inicialmente oculto */
+}
+
+/* Estilos para botões */
+
+/* Estilo para os botões de alternância */
+.plantao-option {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Alinha os itens nas extremidades */
+    margin-bottom: 10px;
+}
+
+.toggle-btn {
+    width: 50px; /* Largura do botão */
+    height: 25px; /* Altura do botão */
+    background-color: #ccc; /* Cor de fundo padrão */
+    border-radius: 15px; /* Bordas arredondadas */
+    position: relative; /* Para posicionar o círculo */
+    cursor: pointer; /* Cursor de ponteiro */
+    transition: background-color 0.3s ease; /* Transição suave */
+    border: none; /* Remove borda padrão */
+    outline: none; /* Remove contorno ao clicar */
+}
+
+
+.toggle-btn::before {
+    content: '';
+    position: absolute;
+    top: 2px; /* Posição vertical do círculo */
+    left: 2px; /* Posição horizontal do círculo */
+    width: 21px; /* Largura do círculo */
+    height: 21px; /* Altura do círculo */
+    background-color: white; /* Cor do círculo */
+    border-radius: 50%; /* Círculo perfeito */
+    transform: translateX(25px); /* Transição suave ao mover o círculo */
+}
+
+/* Estado ativo do botão */
+.toggle-btn.active {
+    background-color: #4CAF50;; /* Cor de fundo quando ativo */
+}
+
+.toggle-btn.active::before {
+    transform: translateX(25px); /* Move o círculo para a direita */
+}
+
+/* Estilo para o botão de salvar */
+
+/* Estilo para os rótulos dos plantões */
+.plantao-option span {
+    font-size: 1rem; /* Tamanho da fonte igual ao restante */
+    font-family: Arial, sans-serif; /* Fonte padrão */
+    margin-right: 10px; /* Espaço à direita do texto */
+}
+
+

@@ -1,0 +1,509 @@
+/* Reset e estilos gerais */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f4f4f4;
+}
+
+/* Estilos do conteúdo */
+.container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+h2, h3 {
+    color: #1a237e;
+    margin-bottom: 1rem;
+}
+
+/* Estilos da Navbar */
+.navbar {
+    background-color: #1a237e;
+    color: white;
+    padding: 1rem 0;
+    width: 100%;
+}
+
+.navbar-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.navbar-brand {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: white;
+    text-decoration: none;
+}
+
+.navbar-logo {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.navbar-logo img {
+    height: 40px;
+    width: auto;
+}
+
+.navbar-nav {
+    display: flex;
+    list-style-type: none;
+}
+
+.nav-item {
+    margin-right: 1rem;
+}
+
+.nav-link {
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    transition: color 0.3s ease, border-bottom 0.3s ease;
+    font-weight: normal;
+    border-bottom: 2px solid transparent;
+}
+
+.nav-link:hover,
+.nav-link.active {
+    color: white;
+    border-bottom: 2px solid white;
+}
+
+/* Estilos para a página de plantão (index.html) */
+.month-selector {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.month-selector button {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    margin: 0 10px;
+    cursor: pointer;
+    font-size: 18px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.month-selector button:hover {
+    background-color: #2980b9;
+}
+
+.month-selector span {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+#calendar {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 10px;
+    margin-bottom: 30px;
+}
+
+/* Estilos das células do dia */
+.day {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    min-height: 100px;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.day:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.day-header {
+    font-weight: bold;
+    margin-bottom: 5px;
+    text-align: center;
+    background-color: #e8f4fd;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.day-number {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #3498db;
+}
+
+/* Estilos para a caixa de seleção */
+select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+    transition: border-color 0.3s ease;
+}
+
+select:focus {
+    border-color: #3498db;
+    outline: none;
+}
+
+/* Estilos do resumo */
+#summary {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+
+#summaryContent {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.summary-item {
+    background-color: #e8f4fd;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.summary-item h3 {
+    margin-top: 0;
+    color: #2c3e50;
+}
+
+/* Estilos para sextas, sábados e domingos */
+.weekend {
+    background-color: #d1e7dd; /* Cor harmoniosa */
+}
+
+/* Estilos para a página de férias */
+.ferias-form {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.ferias-form form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.ferias-form input,
+.ferias-form select {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.ferias-form button {
+    padding: 10px 20px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.ferias-form button:hover {
+    background-color: #2980b9;
+}
+
+.ferias-list,
+.analistas-disponiveis {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.ferias-item,
+.analista-status {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.ferias-item:last-child,
+.analista-status:last-child {
+    border-bottom: none;
+}
+
+.ferias-item button,
+.analista-status button {
+    padding: 5px 10px;
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.ferias-item button:hover,
+.analista-status button:hover {
+    background-color: #c0392b;
+}
+
+.analista-status.disponivel {
+    background-color: #e8f5e9;
+    color: #27ae60;
+}
+
+.analista-status.indisponivel {
+    background-color: #ffebee;
+    color: #e74c3c;
+}
+
+.aviso-ferias {
+    color: #ff9900;
+    font-style: italic;
+    font-size: 0.9em;
+    margin-top: 5px;
+}
+
+/* Estilos responsivos */
+@media (max-width: 768px) {
+    .container {
+        padding: 0 0.5rem;
+    }
+
+    #calendar {
+        grid-template-columns: repeat(2, 1fr); /* Ajusta para telas menores */
+    }
+
+    .ferias-form form,
+    .analistas-form form {
+        flex-direction: column;
+    }
+
+    .ferias-form input,
+    .ferias-form select,
+    .analistas-form input {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .ferias-form button,
+    .analistas-form button {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    h2 {
+        font-size: 1.5rem;
+    }
+
+    .day-header {
+        font-size: 0.9rem;
+    }
+
+    .day-number {
+        font-size: 1rem;
+    }
+
+    .day input {
+        font-size: 0.9rem;
+    }
+
+    .ferias-item,
+    .analista-status {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .ferias-item button,
+    .analista-status button {
+        margin-top: 10px;
+    }
+}
+
+/* Popup */
+.popup-overlay {
+    display: none; /* Inicialmente oculto */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.popup-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 15px;
+    width: 90%;
+    max-width: 600px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease, opacity 0.3s ease; /* Animação suave */
+    opacity: 1;
+}
+
+.close {
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    color: #e74c3c; /* Cor do botão de fechar */
+}
+
+/* Estilos para o card de status do analista */
+.analista-status {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.analista-info {
+    flex-grow: 1;
+}
+
+.analista-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-icon {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    padding: 5px;
+    border-radius: 50%;
+    transition: background-color 0.3s;
+}
+
+.btn-view {
+    color: #3498db;
+}
+
+.btn-delete {
+    color: #e74c3c;
+}
+
+.btn-icon:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.status-text {
+    font-weight: bold;
+    margin-top: 5px;
+}
+
+/* Estilos para o filtro de período */
+.status-filter {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.status-filter input[type="date"] {
+    padding: 5px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.status-filter button {
+    padding: 5px 10px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.status-filter button:hover {
+    background-color: #2980b9;
+}
+
+/* Estilos para exportação */
+.export-section {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 20px;
+}
+
+.export-btn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+    margin-left: 10px; /* Espaçamento entre os botões */
+}
+
+.export-btn:hover {
+    background-color: #45a049;
+}
+
+/* Contadores */
+.analistas-contador,
+.ferias-contador {
+    display: flex;
+    justify-content: space-between;
+    background-color: #ffffff;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.analistas-contador span,
+.ferias-contador span {
+    flex: 1;
+    text-align: center;
+}
+
+#totalGeral {
+    background-color: #e8f4fd; /* Cor de fundo suave */
+    border: 2px solid #3498db; /* Borda azul */
+    border-radius: 8px;
+    padding: 15px;
+    margin-top: 20px;
+    font-weight: bold;
+    text-align: center;
+}
