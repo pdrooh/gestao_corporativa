@@ -138,6 +138,14 @@ document.addEventListener('change', (e) => {
         const value = e.target.value;
         saveToLocalStorage(inputId, value);
         updateSummary();
+
+        // Se o analista foi selecionado numa sexta-feira, preenche automaticamente sábado e domingo
+        const dayNumber = parseInt(inputId.split('-')[3]);
+        const dayOfWeek = new Date(currentDate.getFullYear(), currentDate.getMonth(), dayNumber).getDay();
+        
+        if (dayOfWeek === 5) { // Sexta-feira
+            preencherFimDeSemana(inputId, value);
+        }
     }
 });
 
@@ -265,7 +273,7 @@ function preencherEscala() {
 }
 
 function escolherAnalistaParaSemana(escalas) {
-    const analistasElegiveis = Object.keys(escalas).filter(analista => escalas[analista].semana < 2 && escalas[analista].fimDeSemana === 0);
+    const analistasElegiveis = Object.keys(escalas).filter(analista => escalas[analista].semana < 1 && escalas[analista].fimDeSemana === 0);
     if (analistasElegiveis.length === 0) return null;
     const randomIndex = Math.floor(Math.random() * analistasElegiveis.length);
     return analistasElegiveis[randomIndex];
@@ -278,16 +286,40 @@ function escolherAnalistaParaFimDeSemana(escalas) {
     return analistasElegiveis[randomIndex];
 }
 
-// Adiciona os manipuladores de eventos para os botões
-document.getElementById('exportMonthly').addEventListener('click', exportMonthlyReport);
-document.getElementById('preencherEscala').addEventListener('click', preencherEscala);
+// Função para preencher automaticamente sábado e domingo
+function preencherFimDeSemana(inputId, analista) {
+    const dayNumber = parseInt(inputId.split('-')[3]);
+    const nextDayInputId = `day-${currentDate.getFullYear()}-${currentDate.getMonth()}-${dayNumber + 1}`; // Sábado
+    const nextNextDayInputId = `day-${currentDate.getFullYear()}-${currentDate.getMonth()}-${dayNumber + 2}`; // Domingo
+
+    // Preenche o sábado
+    document.getElementById(nextDayInputId).value = analista;
+    saveToLocalStorage(nextDayInputId, analista);
+
+    // Preenche o domingo
+    document.getElementById(nextNextDayInputId).value = analista;
+    saveToLocalStorage(nextNextDayInputId, analista);
+
+    // Atualiza a contagem de escalas
+    updateSummary();
+}
 
 // Função para limpar a escala
 function clearScale() {
-    const selects = document.querySelectorAll('#calendar select');
-    selects.forEach(select => {
-        select.value = '';
-        saveToLocalStorage(select.id, '');
-    });
-    updateSummary();
+    if (confirm("Você tem certeza que deseja limpar a escala?")) {
+        const selects = document.querySelectorAll('#calendar select');
+        selects.forEach(select => {
+            select.value = '';
+            saveToLocalStorage(select.id, '');
+        });
+        updateSummary();
+    }
 }
+
+// Adiciona os manipuladores de eventos para os botões
+document.getElementById('exportMonthly').addEventListener('click', exportMonthlyReport);
+document.getElementById('preencherEscala').addEventListener('click', preencherEscala);
+document.getElementById('clearScale').addEventListener('click', clearScale); // Adiciona evento para o botão de limpar
+
+// Atualiza o calendário ao carregar a página
+updateCalendar();
