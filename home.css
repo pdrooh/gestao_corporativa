@@ -10,10 +10,11 @@
 /* Estilos do conteúdo */
 .container {
     display: flex;
-    justify-content: space-between; /* Espaço entre o formulário e a lista */
-    max-width: 1200px;
-    margin: 2rem auto;
-    padding: 0 1rem;
+    flex-wrap: wrap; /* Permite que os itens se movam para a próxima linha se não houver espaço */
+    justify-content: space-between; /* Espaço entre os itens */
+    max-width: 1200px; /* Largura máxima */
+    margin: 0 auto; /* Centraliza a container */
+    padding: 1rem; /* Padding interno */
 }
 
 .form-container, .list-container {
@@ -22,6 +23,8 @@
     border-radius: 8px; /* Bordas arredondadas */
     padding: 20px; /* Espaçamento interno */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra */
+    max-width: 100%;
+    margin: 10px;
     margin-right: 20px; /* Espaço extra à direita do formulário */
 }
 
@@ -63,13 +66,19 @@
 
 /* Impede a rolagem da página inteira */
 body {
-    overflow: hidden; /* Impede a rolagem da página inteira */
+    overflow-x: hidden; /* Impede rolagem horizontal */
 }
 
 /* Oculta a barra de rolagem, mas mantém a rolagem funcional */
-.analistas-list-container {
-    scrollbar-width: none; /* Para Firefox */
+body {
+    overflow-x: hidden; /* Impede rolagem horizontal */
 }
+
+.analistas-list-container {
+    max-height: 500px; /* Defina uma altura máxima */
+    overflow-y: auto; /* Permite rolagem vertical */
+}
+
 
 .analistas-list-container::-webkit-scrollbar {
     display: none; /* Para Chrome, Safari e outros navegadores baseados em WebKit */
@@ -1330,4 +1339,17 @@ h2, h3 {
 
 #searchInput::placeholder {
     color: #aaa; /* Cor do texto do placeholder */
+}
+
+
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column; /* Muda para coluna em telas menores */
+    }
+
+    .form-container,
+    .list-container {
+        margin-right: 0; /* Remove margem direita */
+        width: 100%; /* Garante que ocupe toda a largura */
+    }
 }
