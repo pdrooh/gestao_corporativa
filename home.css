@@ -24,7 +24,7 @@
     padding: 20px; /* Espaçamento interno */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra */
     max-width: 100%;
-    margin: 10px;
+
     margin-right: 20px; /* Espaço extra à direita do formulário */
 }
 
@@ -66,19 +66,13 @@
 
 /* Impede a rolagem da página inteira */
 body {
-    overflow-x: hidden; /* Impede rolagem horizontal */
+    overflow: hidden; /* Impede a rolagem da página inteira */
 }
 
 /* Oculta a barra de rolagem, mas mantém a rolagem funcional */
-body {
-    overflow-x: hidden; /* Impede rolagem horizontal */
-}
-
 .analistas-list-container {
-    max-height: 500px; /* Defina uma altura máxima */
-    overflow-y: auto; /* Permite rolagem vertical */
+    scrollbar-width: none; /* Para Firefox */
 }
-
 
 .analistas-list-container::-webkit-scrollbar {
     display: none; /* Para Chrome, Safari e outros navegadores baseados em WebKit */

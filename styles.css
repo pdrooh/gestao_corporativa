@@ -941,3 +941,101 @@ h2, h3 {
     border-radius: 4px;
 }
 
+
+
+
+/* Estilos para a página de home office */
+/* Estilos para a página de home office */
+.day {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    min-height: 100px;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.day:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.day-number {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #3498db;
+}
+
+select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+    transition: border-color 0.3s ease;
+    margin-bottom: 10px; /* Espaçamento entre os seletores */
+}
+
+select:focus {
+    border-color: #3498db;
+    outline: none;
+}
+
+.analistas-container {
+    margin-top: 10px;
+}
+
+.add-analista-btn {
+    margin-top: 5px;
+    padding: 5px 10px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.add-analista-btn:hover {
+    background-color: #2980b9;
+}
+
+.export-btn {
+    margin-top: 20px;
+    padding: 10px 15px;
+    background-color: #2ecc71;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.export-btn:hover {
+    background-color: #27ae60;
+}
+
+/* Estilo para os cards no resumo */
+.card {
+    background-color: #f9f9f9; /* Cor de fundo do card */
+    border: 1px solid #ddd; /* Borda do card */
+    border-radius: 5px; /* Bordas arredondadas */
+    padding: 10px; /* Espaçamento interno */
+    margin-bottom: 10px; /* Espaço entre os cards */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra do card */
+}
+
+/* Estilo para o título do analista no card */
+.card-title {
+    font-weight: bold;
+    margin-bottom: 5px; /* Espaço abaixo do título */
+}
+
+/* Estilo para as informações dentro do card */
+.card-info {
+    font-size: 14px; /* Tamanho da fonte */
+    color: #555; /* Cor do texto */
+}
