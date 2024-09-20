@@ -68,7 +68,29 @@ function atualizarListaAnalistas() {
 
     // Atualiza o total de analistas
     document.getElementById('totalAnalistas').innerText = analistas.length;
+
+    // Chama a função de filtragem após a lista ser atualizada
+    filtrarAnalistas();
 }
+
+// Função para filtrar analistas
+function filtrarAnalistas() {
+    const searchInput = document.getElementById('searchInput');
+    const filter = searchInput.value.toLowerCase();
+    const analistas = document.getElementsByClassName('analista-item'); // Supondo que cada analista tenha a classe 'analista-item'
+
+    for (let i = 0; i < analistas.length; i++) {
+        const analistaName = analistas[i].textContent.toLowerCase();
+        if (analistaName.includes(filter)) {
+            analistas[i].style.display = ""; // Mostra o analista
+        } else {
+            analistas[i].style.display = "none"; // Esconde o analista
+        }
+    }
+}
+
+// Adiciona o listener ao campo de busca
+document.getElementById('searchInput').addEventListener('input', filtrarAnalistas);
 
 // Remover analista
 function removerAnalista(index) {

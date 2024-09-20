@@ -895,3 +895,49 @@ h2, h3 {
 .export-btn:hover {
     background-color: #45a049;
 }
+
+
+.status-filter {
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.status-filter label {
+    margin-right: 10px;
+}
+
+.status-filter input[type="date"],
+.status-filter input[type="text"] {
+    padding: 8px;
+    margin-right: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.status-filter button {
+    padding: 8px 12px;
+    margin-right: 10px;
+    border: none;
+    border-radius: 4px;
+    background-color: #007BFF;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.status-filter button:hover {
+    background-color: #0056b3;
+}
+
+.search-bar {
+    margin-left: auto; /* Alinha a barra de busca à direita */
+}
+
+.search-bar input[type="text"] {
+    width: 200px; /* Define uma largura fixa para a barra de busca */
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+

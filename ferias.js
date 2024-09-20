@@ -11,6 +11,8 @@ document.addEventListener('DOMContentLoaded', () => {
     atualizarStatusAnalistas();
     atualizarContadorFerias();
 
+    document.getElementById('searchInput').addEventListener('input', filtrarAnalistas);
+
 });
 
 
@@ -116,7 +118,7 @@ function atualizarStatusAnalistas() {
         const periodoFerias = ferias.find(periodo => {
             const inicioFerias = new Date(periodo.dataInicio);
             const fimFerias = new Date(periodo.dataFim);
-            return periodo.analista === analista.nome && 
+            return periodo.analista === analista.nome &&
                    ((inicioFerias >= dataInicioFiltro && inicioFerias <= dataFimFiltro) ||
                     (fimFerias >= dataInicioFiltro && fimFerias <= dataFimFiltro) ||
                     (inicioFerias <= dataInicioFiltro && fimFerias >= dataFimFiltro));
@@ -135,13 +137,14 @@ function atualizarStatusAnalistas() {
             </div>
             <div class="analista-actions">
                 <button onclick="abrirPopupAnalista(${index})" class="btn-icon btn-view"><i class="fas fa-eye"></i></button>
-                <button onclick="confirmarRemoverAnalista(${index})" class="btn-icon btn-delete"><i class="fas fa-trash"></i></button>
+                <!-- Removido o botão de deletar -->
             </div>
         `;
         statusAnalistas.appendChild(item);
         atualizarContadorAnalistas();
     });
 }
+
 
 
 
@@ -231,6 +234,7 @@ function atualizarListaFerias() {
 // Remover Férias
 
 function removerFerias(index) {
+    
     const feriasRemovidas = ferias.splice(index, 1)[0];
     const analista = analistas.find(a => a.nome === feriasRemovidas.analista);
     if (analista && analista.historicoFerias) {
@@ -422,13 +426,16 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('filtrarStatus').addEventListener('click', filtrarStatus);
 
     const expandButtons = document.querySelectorAll('.expand-btn');
-    expandButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            const content = button.parentElement.nextElementSibling;
-            content.style.display = content.style.display === 'none' ? 'block' : 'none';
-            button.innerHTML = content.style.display === 'none' ? '<i class="fas fa-chevron-down"></i>' : '<i class="fas fa-chevron-up"></i>';
-        });
+expandButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        const content = button.parentElement.nextElementSibling;
+        const isExpanded = content.style.display === 'block';
+
+        // Alterna a exibição
+        content.style.display = isExpanded ? 'none' : 'block';
+        button.innerHTML = isExpanded ? '<i class="fas fa-chevron-down"></i>' : '<i class="fas fa-chevron-up"></i>';
     });
+});
 
     document.querySelector('.close').addEventListener('click', () => {
         document.getElementById('analistaPopup').style.display = 'none';
@@ -627,3 +634,30 @@ function reverseFormatDate(dateString) {
 }
 
 
+function filtrarAnalistas() {
+    const searchInput = document.getElementById('searchInput').value.toLowerCase();
+    const statusAnalistas = document.getElementById('analistasStatus');
+    const analistasItems = Array.from(statusAnalistas.getElementsByClassName('analista-status'));
+
+    // Filtra analistas com base na pesquisa
+    const filteredAnalistas = analistasItems.filter(item => {
+        const analistaNome = item.querySelector('.analista-info strong').textContent.toLowerCase();
+        return analistaNome.includes(searchInput);
+    });
+
+    // Limpa a lista atual
+    statusAnalistas.innerHTML = '';
+
+    // Adiciona os analistas filtrados de volta ao DOM
+    filteredAnalistas.forEach(item => {
+        statusAnalistas.appendChild(item);
+    });
+
+    // Atualiza a contagem de analistas disponíveis
+    atualizarContadorAnalistas();
+}
+
+
+
+// Adiciona o evento de input à barra de busca
+document.getElementById('searchInput').addEventListener('input', filtrarAnalistas);
