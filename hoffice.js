@@ -119,13 +119,14 @@ function getAnalistas() {
 }
 
 // Função para atualizar o resumo
+// Função para atualizar o resumo
 function updateSummary() {
     const summaryContent = document.getElementById('summaryContent');
     summaryContent.innerHTML = '';
 
     const year = currentDate.getFullYear();
     const month = currentDate.getMonth();
-    let summaryData = [];
+    let summaryData = {};
 
     const lastDay = new Date(year, month + 1, 0);
 
@@ -134,23 +135,37 @@ function updateSummary() {
         if (date.getDay() === 5) { // Sexta-feira
             const container = document.getElementById(`analistasContainer-${year}-${month}-${i}`);
             const selects = container.getElementsByTagName('select');
+            summaryData[i] = []; // Inicializa o array para o dia
+
             for (let select of selects) {
                 if (select.value) {
                     const analista = select.options[select.selectedIndex];
-                    summaryData.push({
+                    summaryData[i].push({
                         nome: analista.value,
                         departamento: analista.dataset.departamento,
                         cargo: analista.dataset.cargo,
-                        data: `${i}/${month + 1}/${year}`
                     });
                 }
             }
         }
     }
 
-    summaryData.forEach(item => {
-        summaryContent.innerHTML += `<div class="card"><div class="card-title">${item.nome}</div><div class="card-info">${item.departamento} - ${item.cargo} - ${item.data}</div></div>`;
-    });
+    // Exibir o resumo por dia
+    for (const [day, analistas] of Object.entries(summaryData)) {
+        const card = document.createElement('div');
+        card.className = 'day-summary';
+        card.innerHTML = `<h4>Resumo do dia ${day}/${month + 1}/${year}</h4>`;
+        
+        analistas.forEach(item => {
+            card.innerHTML += `
+                <div class="card">
+                    <div class="card-title">${item.nome}</div>
+                    <div class="card-info">${item.departamento} - ${item.cargo}</div>
+                </div>`;
+        });
+
+        summaryContent.appendChild(card);
+    }
 }
 
 // Exportar relatório
