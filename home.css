@@ -66,7 +66,8 @@
 
 /* Impede a rolagem da página inteira */
 body {
-    overflow: hidden; /* Impede a rolagem da página inteira */
+    overflow-y: auto; /* Permite rolagem vertical */
+    max-height: 100vh; /* Define a altura máxima da viewport */
 }
 
 /* Oculta a barra de rolagem, mas mantém a rolagem funcional */
@@ -98,6 +99,8 @@ body {
     max-width: 1200px;
     margin: 2rem auto;
     padding: 0 1rem;
+    overflow-y: auto; /* Permite rolagem no container */
+    max-height: calc(100vh - 60px); /* Ajuste conforme necessário para a altura da navbar */
 }
 
 h2, h3 {
@@ -106,63 +109,70 @@ h2, h3 {
 }
 
 /* Estilos da Navbar */
+/* Estilos da Navbar */
 .navbar {
-    background-color: #1a237e;
-    color: white;
-    padding: 1rem 0;
-    width: 100%;
+    background-color: #1a237e; /* Cor de fundo */
+    color: white; /* Cor do texto */
+    padding: 0.5rem 0; /* Reduzir o espaçamento superior e inferior */
+    display: flex; /* Flexbox para a navbar */
+    justify-content: space-between; /* Espaço entre os itens */
+    align-items: center; /* Alinhamento vertical */
 }
 
+/* Alinhamento do conteúdo da navbar */
 .navbar-content {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 1rem;
-}
-
-.navbar-brand {
-    font-size: 1.2rem;
-    font-weight: bold;
-    color: white;
-    text-decoration: none;
+    display: flex; /* Flexbox para alinhar os itens */
+    justify-content: space-between; /* Espaço entre logo e brand */
+    align-items: center; /* Alinhamento vertical */
+    width: 100%; /* Largura total */
+    max-width: 1200px; /* Largura máxima */
+    margin: 0 auto; /* Centraliza a navbar */
 }
 
 .navbar-logo {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
+    flex: 0 0 auto; /* Logo não cresce nem encolhe */
 }
 
 .navbar-logo img {
-    height: 40px;
-    width: auto;
+    height: 40px; /* Altura da logo reduzida */
 }
 
 .navbar-nav {
-    display: flex;
-    list-style-type: none;
+    display: flex; /* Flexbox para os itens da nav */
+    list-style-type: none; /* Remove marcadores */
+    margin: 0; /* Remove margem */
+    padding: 0; /* Remove padding */
+    flex: 1; /* Ocupa o espaço restante */
+    justify-content: center; /* Centraliza os itens */
 }
 
 .nav-item {
-    margin-right: 1rem;
+    margin: 0 20px; /* Aumenta o espaçamento entre itens */
+    white-space: nowrap; /* Impede a quebra de linha */
 }
 
 .nav-link {
-    color: rgba(255, 255, 255, 0.8);
-    text-decoration: none;
-    padding: 0.5rem 1rem;
-    transition: color 0.3s ease, border-bottom 0.3s ease;
-    font-weight: normal;
-    border-bottom: 2px solid transparent;
+    color: rgba(255, 255, 255, 0.9); /* Cor do texto */
+    text-decoration: none; /* Remove sublinhado */
+    padding: 10px 15px; /* Espaçamento interno */
+    border-radius: 5px; /* Bordas arredondadas */
+    transition: background-color 0.3s, color 0.3s; /* Transições suaves */
 }
 
 .nav-link:hover,
 .nav-link.active {
-    color: white;
-    border-bottom: 2px solid white;
+    background-color: rgba(255, 255, 255, 0.2); /* Fundo ao passar o mouse */
+    color: white; /* Cor do texto ao passar o mouse */
 }
+
+/* Estilo adicional para o nome "GesTool" */
+.navbar-brand {
+    flex: 0 0 auto; /* Brand não cresce nem encolhe */
+    font-size: 1.5rem; /* Tamanho da fonte */
+    font-weight: bold; /* Negrito */
+    color: white; /* Cor do texto */
+}
+
 
 /* Estilos para a página de plantão (index.html) */
 .month-selector {
@@ -463,12 +473,18 @@ h2, h3 {
 @media (max-width: 768px) {
     .container {
         padding: 0 0.5rem;
+        flex-direction: column;
+    }
+    .form-container, .list-container {
+        width: 100%; /* Garante que ocupe toda a largura */
+        margin-right: 0; /* Remove margem direita */
     }
 
     .navbar-content {
         flex-direction: column;
         align-items: center;
     }
+
 
     .navbar-nav {
         margin-top: 1rem;
@@ -529,6 +545,11 @@ h2, h3 {
     .status-filter input[type="date"] {
         width: 100%;
         margin-top: 5px;
+    }
+
+    .popup-content {
+        width: 95%; /* Garante que o popup ocupe 95% da largura da tela */
+        max-height: 90%; /* Altura máxima do popup */
     }
 }
 
@@ -1347,3 +1368,4 @@ h2, h3 {
         width: 100%; /* Garante que ocupe toda a largura */
     }
 }
+

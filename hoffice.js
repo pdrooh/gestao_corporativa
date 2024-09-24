@@ -67,7 +67,7 @@ function getEscalados(date) {
 function loadEscalas(year, month, day) {
     const key = `${year}-${month}`;
     const container = document.getElementById(`analistasContainer-${year}-${month}-${day}`);
-    
+
     // Limpa o container antes de carregar
     container.innerHTML = '';
 
@@ -107,7 +107,8 @@ function saveEscala(date) {
     escalas[key][day] = Array.from(selects).map(select => ({
         nome: select.value,
         departamento: select.options[select.selectedIndex].dataset.departamento,
-        cargo: select.options[select.selectedIndex].dataset.cargo
+        cargo: select.options[select.selectedIndex].dataset.cargo,
+        data: `${day}/${month + 1}/${year}` // Adicionando a data
     })).filter(analista => analista.nome); // Filtra analistas vazios
 
     localStorage.setItem('escalas', JSON.stringify(escalas));
@@ -118,7 +119,6 @@ function getAnalistas() {
     return JSON.parse(localStorage.getItem('analistas')) || [];
 }
 
-// Função para atualizar o resumo
 // Função para atualizar o resumo
 function updateSummary() {
     const summaryContent = document.getElementById('summaryContent');
@@ -155,7 +155,7 @@ function updateSummary() {
         const card = document.createElement('div');
         card.className = 'day-summary';
         card.innerHTML = `<h4>Resumo do dia ${day}/${month + 1}/${year}</h4>`;
-        
+
         analistas.forEach(item => {
             card.innerHTML += `
                 <div class="card">
@@ -195,7 +195,7 @@ document.getElementById('exportReport').addEventListener('click', () => {
     }
 
     // Corrigido para garantir que as colunas sejam preenchidas corretamente
-    const csvContent = "data:text/csv;charset=utf-8," 
+    const csvContent = "data:text/csv;charset=utf-8,"
         + "Nome,Departamento,Cargo,Data do Home Office\n"
         + summaryData.map(e => `${e.nome},${e.departamento},${e.cargo},${e.data}`).join("\n");
 
